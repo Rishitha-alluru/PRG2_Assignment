@@ -9,6 +9,30 @@ namespace PRG2_Assignment
 {
     class BoardingGate
     {
+        public string GateNumber { get; set; }
+        public bool SupportsCFFT { get; set; }
+        public bool SupportsDDJB { get; set; }
+        public bool SupportsLWTT { get; set; }
+        public Flight Flight { get; set; }
 
+        public BoardingGate(string gateNumber, bool supportsCFFT, bool supportsDDJB, bool supportsLWTT)
+        {
+            GateNumber = gateNumber;
+            SupportsCFFT = supportsCFFT;
+            SupportsDDJB = supportsDDJB;
+            SupportsLWTT = supportsLWTT;
+        }
+        public double CalculateFees()
+        {
+            if (Flight != null)
+            {
+                return Flight.CalculateFees();
+            }
+            return 0.0;
+        }
+        public override string ToString()
+        {
+            return "BoardingGate: " + GateNumber + " SupportsCFFT: " + SupportsCFFT + " SupportsDDJB " + SupportsDDJB + " SupportsLWTT: " + SupportsLWTT;
+        }
     }
 }
