@@ -5,6 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//==========================================================
+// Student Number : S10268022
+// Student Name : Alluru Rishitha Reddy
+// Partner Name : Faye Cheah Yi Fei
+//==========================================================
+
 namespace PRG2_Assignment
 {
     class Airline
