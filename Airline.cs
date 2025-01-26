@@ -11,12 +11,13 @@ namespace PRG2_Assignment
     {
         public string Name { get; set; }
         public string Code { get; set; }
-        public Dictionary<string, Flight> Flights { get; private set; } = new Dictionary<string, Flight>();
+        public Dictionary<string, Flight> Flights { get; private set; }
 
         public Airline(string name, string code)
         {
             Name = name;
             Code = code;
+            Flights = new Dictionary<string, Flight>();
         }
         public bool AddFlight(Flight flight)
         {
@@ -36,11 +37,29 @@ namespace PRG2_Assignment
         public double CalculateFees()
         {
             double totalFees = 0.0;
-            foreach (KeyValuePair<string, Flight> flight in Flights)
+            int totalFlights = Flights.Count;
+            double discount = 0.0;
+
+            foreach (var flight in Flights.Values)
             {
-                totalFees += flight.Value.CalculateFees();
+                totalFees += flight.CalculateFees();
+
+                if (flight.ExpectedTime.Hour < 11 || flight.ExpectedTime.Hour > 21)
+                    discount += 110;
+
+                if (flight.Origin == "Dubai (DXB)" || flight.Origin == "Bangkok (BKK)" || flight.Origin == "Tokyo (NRT)")
+                    discount += 25; 
+
+                if (!flight.HasSpecialRequest)
+                    discount += 50;
             }
-            return totalFees;
+
+            discount += (totalFlights / 3) * 350;
+
+            if (totalFlights > 5)
+                discount += totalFees * 0.03;
+
+            return Math.Max(0, totalFees - discount);
         }
 
         public override string ToString()

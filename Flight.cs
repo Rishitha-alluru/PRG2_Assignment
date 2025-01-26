@@ -21,50 +21,60 @@ namespace PRG2_Assignment
             Destination = destination;
             ExpectedTime = expectedTime;
         }
-        public abstract double CalculateFees();
+        public virtual double CalculateFees()
+        {
+            double baseFee = 0;
+            if (Destination == "Singapore (SIN)")
+            {
+                baseFee = 500;
+            }
+            else if (Origin == "Singapore (SIN)")
+            {
+                baseFee = 800;
+            }
+
+            return baseFee;
+        }
         public override string ToString()
         { return "FlightNumber:" + FlightNumber + "\tOrigin:" + Origin + "\tDestination:" + Destination + "\tExpectedTime:" + ExpectedTime + "\tStatus:" + Status; }
     }
-    public class NORMFlight : Flight
+    class NORMFlight : Flight
     {
-        public NORMFlight(string flightNumber, string origin, string destination, DateTime expectedTime): base(flightNumber, origin, destination, expectedTime){}
-        public override double CalculateFees() { return 0.00; }
+        public NORMFlight(string flightNumber, string origin, string destination, DateTime expectedTime, string status) : base(flightNumber, origin, destination, expectedTime, status) { }
+        public override double CalculateFees()
+        {
+            return base.CalculateFees();
+        }
         public override string ToString()
         { return base.ToString(); }
     }
 
-    public class CFFTFlight : Flight
+    class CFFTFlight : Flight
     {
-        public double RequestFee { get; set; }
-        public CFFTFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee): base(flightNumber, origin, destination, expectedTime)
-        {
-            RequestFee = requestFee;
-        }
-        public override double CalculateFees() => RequestFee;
+        private double RequestFee = 150;
+        public CFFTFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee, string status) : base(flightNumber, origin, destination, expectedTime, status) { }
+        public override double CalculateFees()
+        { return base.CalculateFees() + RequestFee; }
         public override string ToString()
         { return base.ToString(); }
     }
 
-    public class LWTTFlight : Flight
+    class LWTTFlight : Flight
     {
-        public double RequestFee { get; set; }
-        public LWTTFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee): base(flightNumber, origin, destination, expectedTime)
-        {
-            RequestFee = requestFee;
-        }
-        public override double CalculateFees() => RequestFee;
+        private double RequestFee = 500;
+        public LWTTFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee, string status) : base(flightNumber, origin, destination, expectedTime, status) { }
+        public override double CalculateFees()
+        { return base.CalculateFees() + RequestFee; }
         public override string ToString()
         { return base.ToString(); }
     }
 
-    public class DDJBFlight : Flight
+    class DDJBFlight : Flight
     {
-        public double RequestFee { get; set; }
-        public DDJBFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee): base(flightNumber, origin, destination, expectedTime)
-        {
-            RequestFee = requestFee;
-        }
-        public override double CalculateFees() => RequestFee;
+        private double RequestFee = 300;
+        public DDJBFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee, string status) : base(flightNumber, origin, destination, expectedTime, status) { }
+        public override double CalculateFees()
+        { return base.CalculateFees() + RequestFee; }
         public override string ToString()
         { return base.ToString(); }
     }

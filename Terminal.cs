@@ -9,50 +9,67 @@ namespace PRG2_Assignment
 {
     class Terminal
     {
-        private string TerminalName { get; set; }
-        private Dictionary<string, Airline> airlines = new Dictionary<string, Airline>();
-        private Dictionary<string, Flight> flights = new Dictionary<string, Flight>();
-        private Dictionary<string, BoardingGate> boardingGates = new Dictionary<string, BoardingGate>();
-        private Dictionary<string, double> gateFees = new Dictionary<string, double>();
+        public string TerminalName { get; set; }
+        public Dictionary<string, Airline> Airlines { get; set; }
+        public Dictionary<string, Flight> Flights { get; set; }
+        public Dictionary<string, BoardingGate> BoardingGates { get; set; }
+        public Dictionary<string, double> GateFees { get; set; }
 
-        public Terminal(string name)
+        public Terminal(string terminalName)
         {
-            TerminalName = name;
+            TerminalName = terminalName;
+            Airlines = new Dictionary<string, Airline>();
+            Flights = new Dictionary<string, Flight>();
+            BoardingGates = new Dictionary<string, BoardingGate>();
+            GateFees = new Dictionary<string, double>();
         }
+
         public bool AddAirline(Airline airline)
         {
-            if (!airlines.ContainsKey(airline.Code))
+            if (!Airlines.ContainsKey(airline.Code))
             {
-                airlines[airline.Code] = airline;
+                Airlines[airline.Code] = airline;
                 return true;
             }
             return false;
         }
+
         public bool AddBoardingGate(BoardingGate boardingGate)
         {
-            if (!boardingGates.ContainsKey(boardingGate.GateNumber))
+            if (!BoardingGates.ContainsKey(boardingGate.GateNumber))
             {
-                boardingGates[boardingGate.GateNumber] = boardingGate;
+                BoardingGates[boardingGate.GateNumber] = boardingGate;
                 return true;
             }
             return false;
         }
+
         public Airline GetAirlineFromFlight(Flight flight)
         {
-            foreach (KeyValuePair<string, Airline> airline in airlines)
-            {
-                if (airline.Value.Flights.ContainsKey(flight.FlightNumber))
-                {
-                    return airline.Value;
-                }
-            }
-            return null;
+            return Airlines.Values.FirstOrDefault(airline => airline.Flights.ContainsKey(flight.FlightNumber));
         }
+
         public void PrintAirlineFees()
         {
-            foreach (KeyValuePair<string, Airline> airline in airlines)
+            foreach (var airline in Airlines.Values)
             {
-                Console.WriteLine(airline.Value.Name + ": " + airline.Value.CalculateFees());
+                Console.WriteLine($"Airline: {airline.Name}, Fees: {airline.CalculateFees():C}");
+            }
+        }
+
+        public void CalculateGateFees()
+        {
+            foreach (var gate in BoardingGates.Values)
+            {
+                GateFees[gate.GateNumber] = gate.CalculateFees();
+            }
+        }
+
+        public void PrintGateFees()
+        {
+            foreach (var gateFee in GateFees)
+            {
+                Console.WriteLine($"Gate: {gateFee.Key}, Fee: {gateFee.Value:C}");
             }
         }
         public override string ToString()

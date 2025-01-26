@@ -24,11 +24,9 @@ namespace PRG2_Assignment
         }
         public double CalculateFees()
         {
-            if (Flight != null)
-            {
-                return Flight.CalculateFees();
-            }
-            return 0.0;
+            double gateFee = 300;
+            Flight.CalculateFees() += gateFee;
+            return gateFee;
         }
         public override string ToString()
         {
