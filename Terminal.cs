@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 // Partner Name : Faye Cheah Yi Fei
 //==========================================================
 
-namespace PRG2_Assignment
+namespace S10268022_PRG2Assignment
 {
     class Terminal
     {

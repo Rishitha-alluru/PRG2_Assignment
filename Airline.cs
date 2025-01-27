@@ -1,3 +1,4 @@
+﻿using S10268022_PRG2Assignment;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 // Partner Name : Faye Cheah Yi Fei
 //==========================================================
 
-namespace PRG2_Assignment
+namespace S10268022_PRG2Assignment
 {
     class Airline
     {
@@ -51,13 +52,13 @@ namespace PRG2_Assignment
                 totalFees += flight.CalculateFees();
 
                 if (flight.ExpectedTime.Hour < 11 || flight.ExpectedTime.Hour > 21)
-                    discount += 110;
+                { discount += 110; }
 
-                if (flight.Origin == "Dubai (DXB)" || flight.Origin == "Bangkok (BKK)" || flight.Origin == "Tokyo (NRT)")
-                    discount += 25; 
+                else if (flight.Origin == "Dubai (DXB)" || flight.Origin == "Bangkok (BKK)" || flight.Origin == "Tokyo (NRT)")
+                { discount += 25; }
 
-                if (!flight.HasSpecialRequest)
-                    discount += 50;
+                else if (flight.Status == null)
+                { discount += 50; }
             }
 
             discount += (totalFlights / 3) * 350;
@@ -73,3 +74,4 @@ namespace PRG2_Assignment
             return "Airline: " + Name + " Code: " + Code;
         }
     }
+}

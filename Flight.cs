@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 // Partner Name : Faye Cheah Yi Fei
 //==========================================================
 
-namespace PRG2_Assignment
+namespace S10268022_PRG2Assignment
 {
     abstract class Flight
     {
@@ -26,6 +26,7 @@ namespace PRG2_Assignment
             Origin = origin;
             Destination = destination;
             ExpectedTime = expectedTime;
+            Status = status;
         }
         public virtual double CalculateFees()
         {
@@ -46,7 +47,7 @@ namespace PRG2_Assignment
     }
     class NORMFlight : Flight
     {
-        public NORMFlight(string flightNumber, string origin, string destination, DateTime expectedTime, string status) : base(flightNumber, origin, destination, expectedTime, status) { }
+        public NORMFlight(string flightNumber, string origin, string destination, DateTime expectedTime) : base(flightNumber, origin, destination, expectedTime, null) { }
         public override double CalculateFees()
         {
             return base.CalculateFees();
@@ -58,7 +59,7 @@ namespace PRG2_Assignment
     class CFFTFlight : Flight
     {
         private double RequestFee = 150;
-        public CFFTFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee, string status) : base(flightNumber, origin, destination, expectedTime, status) { }
+        public CFFTFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee) : base(flightNumber, origin, destination, expectedTime, "CFFT") { }
         public override double CalculateFees()
         { return base.CalculateFees() + RequestFee; }
         public override string ToString()
@@ -68,7 +69,7 @@ namespace PRG2_Assignment
     class LWTTFlight : Flight
     {
         private double RequestFee = 500;
-        public LWTTFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee, string status) : base(flightNumber, origin, destination, expectedTime, status) { }
+        public LWTTFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee) : base(flightNumber, origin, destination, expectedTime, "LWTT") { }
         public override double CalculateFees()
         { return base.CalculateFees() + RequestFee; }
         public override string ToString()
@@ -78,7 +79,7 @@ namespace PRG2_Assignment
     class DDJBFlight : Flight
     {
         private double RequestFee = 300;
-        public DDJBFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee, string status) : base(flightNumber, origin, destination, expectedTime, status) { }
+        public DDJBFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee) : base(flightNumber, origin, destination, expectedTime, "DDJB") { }
         public override double CalculateFees()
         { return base.CalculateFees() + RequestFee; }
         public override string ToString()

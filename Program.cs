@@ -1,5 +1,5 @@
-// See https://aka.ms/new-console-template for more information
-using PRG2_Assignment;
+﻿// See https://aka.ms/new-console-template for more information
+using S10268022_PRG2Assignment;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -11,7 +11,7 @@ using System.Text;
 
 // 1) Load files (airlines and boarding gates)
 
-StreamReader sr_Airlines = new StreamReader("airlines.csv",true);
+StreamReader sr_Airlines = new StreamReader("airlines.csv", true);
 StreamReader sr_BoardingGate = new StreamReader("boardinggates.csv", true);
 Dictionary<string, Airline> dictAirline = new Dictionary<string, Airline>();
 Dictionary<string, BoardingGate> dictBoardingGate = new Dictionary<string, BoardingGate>();
@@ -33,7 +33,7 @@ using (sr_BoardingGate)
     while ((line = sr_BoardingGate.ReadLine()) != null)
     {
         string[] lineB = line.Split(",");
-        BoardingGate boardingGate = new BoardingGate(lineB[0], bool.Parse(lineB[1]), bool.Parse(lineB[2]), bool.Parse(lineB[3]));
+        BoardingGate boardingGate = new BoardingGate(lineB[0], bool.Parse(lineB[1]), bool.Parse(lineB[2]), bool.Parse(lineB[3]), null);
         dictBoardingGate.Add(lineB[0], boardingGate);
     }
 }
@@ -67,6 +67,3 @@ using (sr_BoardingGate)
 
 
 // 9) Display scheduled flights in chronological order, with boarding gates assignments where applicable
-
-
-

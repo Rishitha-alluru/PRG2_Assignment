@@ -1,108 +1,22 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{CADA1A01-2C66-4CC1-B0B9-8E56F153D4B6}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>ConsoleApplication</AssemblyName>
-    <TargetFrameworkVersion>.NET 8.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup>
-    <RootNamespace>S10268022_PRG2Assignment</RootNamespace>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
+    <None Update="airlines.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="boardinggates.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="flights.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Airline.cs" />
-    <Compile Include="BoardingGate.cs" />
-    <Compile Include="Flight.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Terminal.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".git\config" />
-    <None Include=".git\description" />
-    <None Include=".git\HEAD" />
-    <None Include=".git\hooks\applypatch-msg.sample" />
-    <None Include=".git\hooks\commit-msg.sample" />
-    <None Include=".git\hooks\fsmonitor-watchman.sample" />
-    <None Include=".git\hooks\post-update.sample" />
-    <None Include=".git\hooks\pre-applypatch.sample" />
-    <None Include=".git\hooks\pre-commit.sample" />
-    <None Include=".git\hooks\pre-merge-commit.sample" />
-    <None Include=".git\hooks\pre-push.sample" />
-    <None Include=".git\hooks\pre-rebase.sample" />
-    <None Include=".git\hooks\pre-receive.sample" />
-    <None Include=".git\hooks\prepare-commit-msg.sample" />
-    <None Include=".git\hooks\push-to-checkout.sample" />
-    <None Include=".git\hooks\sendemail-validate.sample" />
-    <None Include=".git\hooks\update.sample" />
-    <None Include=".git\index" />
-    <None Include=".git\info\exclude" />
-    <None Include=".git\logs\HEAD" />
-    <None Include=".git\logs\refs\heads\main" />
-    <None Include=".git\logs\refs\remotes\origin\HEAD" />
-    <None Include=".git\objects\pack\pack-760b66e2a83b0650228963149bece75697c8a3b3.idx" />
-    <None Include=".git\objects\pack\pack-760b66e2a83b0650228963149bece75697c8a3b3.pack" />
-    <None Include=".git\objects\pack\pack-760b66e2a83b0650228963149bece75697c8a3b3.rev" />
-    <None Include=".git\packed-refs" />
-    <None Include=".git\refs\heads\main" />
-    <None Include=".git\refs\remotes\origin\HEAD" />
-    <None Include=".vs\PRG2_Assg\v17\.wsuo" />
-    <None Include=".vs\PRG2_Assg\v17\DocumentLayout.json" />
-    <None Include=".vs\S10268022_PRG2Assignment\CopilotIndices\0.2.1657.32929\CodeChunks.db" />
-    <None Include=".vs\S10268022_PRG2Assignment\CopilotIndices\0.2.1657.32929\SemanticSymbols.db" />
-    <None Include=".vs\S10268022_PRG2Assignment\CopilotIndices\0.2.1657.32929\SemanticSymbols.db-shm" />
-    <None Include=".vs\S10268022_PRG2Assignment\CopilotIndices\0.2.1657.32929\SemanticSymbols.db-wal" />
-    <None Include=".vs\S10268022_PRG2Assignment\FileContentIndex\47eb34ae-ad45-4d1a-bb50-930c0eb4d17c.vsidx" />
-    <None Include=".vs\S10268022_PRG2Assignment\FileContentIndex\809d35b6-bf55-4f19-9900-ccb7b6f7e889.vsidx" />
-    <None Include=".vs\S10268022_PRG2Assignment\FileContentIndex\fa7347e8-789b-4e14-a50f-b3bdb408b88a.vsidx" />
-    <None Include=".vs\S10268022_PRG2Assignment\FileContentIndex\ff98a9d2-c39e-468e-8426-1c8b7e204734.vsidx" />
-    <None Include=".vs\S10268022_PRG2Assignment\v17\.wsuo" />
-    <None Include=".vs\S10268022_PRG2Assignment\v17\DocumentLayout.backup.json" />
-    <None Include=".vs\S10268022_PRG2Assignment\v17\DocumentLayout.json" />
-    <None Include=".vs\slnx.sqlite" />
-    <None Include=".vs\VSWorkspaceState.json" />
-    <None Include="airlines.csv" />
-    <None Include="boardinggates.csv" />
-    <None Include="flights.csv" />
-    <None Include="README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include=".git\objects\info\" />
-    <Folder Include=".git\refs\tags\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
-  <ProjectExtensions>
-    <VisualStudio AllowExistingFolder="true" />
-  </ProjectExtensions>
+
 </Project>

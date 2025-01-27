@@ -1,3 +1,4 @@
+﻿using S10268022_PRG2Assignment;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 // Partner Name : Faye Cheah Yi Fei
 //==========================================================
 
-namespace PRG2_Assignment
+namespace S10268022_PRG2Assignment
 {
     class BoardingGate
     {
@@ -21,17 +22,17 @@ namespace PRG2_Assignment
         public bool SupportsLWTT { get; set; }
         public Flight Flight { get; set; }
 
-        public BoardingGate(string gateNumber, bool supportsCFFT, bool supportsDDJB, bool supportsLWTT)
+        public BoardingGate(string gateNumber, bool supportsCFFT, bool supportsDDJB, bool supportsLWTT, Flight flight)
         {
             GateNumber = gateNumber;
             SupportsCFFT = supportsCFFT;
             SupportsDDJB = supportsDDJB;
             SupportsLWTT = supportsLWTT;
+            Flight = flight;
         }
         public double CalculateFees()
         {
             double gateFee = 300;
-            Flight.CalculateFees() += gateFee;
             return gateFee;
         }
         public override string ToString()
