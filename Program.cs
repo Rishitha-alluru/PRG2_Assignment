@@ -37,3 +37,36 @@ using (sr_BoardingGate)
         dictBoardingGate.Add(lineB[0], boardingGate);
     }
 }
+
+// 2) Load files (flights)
+
+
+
+// 3) List all flights with their basic information
+
+
+
+// 4) List all boarding gates
+
+
+
+// 5) Assign a boarding gate to a flight
+
+
+
+// 6) Create a new flight
+
+
+
+// 7) Display full flight details from an airline
+
+
+
+// 8) Modify flight details
+
+
+
+// 9) Display scheduled flights in chronological order, with boarding gates assignments where applicable
+
+
+
