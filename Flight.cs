@@ -58,7 +58,7 @@ namespace S10268022_PRG2Assignment
     class CFFTFlight : Flight
     {
         private double RequestFee = 150;
-        public CFFTFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee) : base(flightNumber, origin, destination, expectedTime, "CFFT") { }
+        public CFFTFlight(string flightNumber, string origin, string destination, DateTime expectedTime) : base(flightNumber, origin, destination, expectedTime, "CFFT") { }
         public override double CalculateFees()
         { return base.CalculateFees() + RequestFee; }
         public override string ToString()
@@ -68,7 +68,7 @@ namespace S10268022_PRG2Assignment
     class LWTTFlight : Flight
     {
         private double RequestFee = 500;
-        public LWTTFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee) : base(flightNumber, origin, destination, expectedTime, "LWTT") { }
+        public LWTTFlight(string flightNumber, string origin, string destination, DateTime expectedTime) : base(flightNumber, origin, destination, expectedTime, "LWTT") { }
         public override double CalculateFees()
         { return base.CalculateFees() + RequestFee; }
         public override string ToString()
@@ -78,7 +78,7 @@ namespace S10268022_PRG2Assignment
     class DDJBFlight : Flight
     {
         private double RequestFee = 300;
-        public DDJBFlight(string flightNumber, string origin, string destination, DateTime expectedTime, double requestFee) : base(flightNumber, origin, destination, expectedTime, "DDJB") { }
+        public DDJBFlight(string flightNumber, string origin, string destination, DateTime expectedTime) : base(flightNumber, origin, destination, expectedTime, "DDJB") { }
         public override double CalculateFees()
         { return base.CalculateFees() + RequestFee; }
         public override string ToString()
