@@ -7,9 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 //==========================================================
-// Student Number : S10268022
-// Student Name : Alluru Rishitha Reddy
-// Partner Name : Faye Cheah Yi Fei
+// Student Name : Alluru Rishitha Reddy (S10268022)
+// Partner Name : Faye Cheah Yi Fei (S10269175)
 //==========================================================
 
 namespace S10268022_PRG2Assignment
