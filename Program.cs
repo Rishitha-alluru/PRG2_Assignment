@@ -39,6 +39,38 @@ using (sr_BoardingGate)
 }
 
 // 2) Load files (flights)
+StreamReader sr_Flights = new StreamReader("flights.csv", true);
+Dictionary<string, Flight> dictFlights = new Dictionary<string, Flight>();
+using (sr_Flights)
+{
+    sr_Flights.ReadLine(); // skips the header
+    string line;
+    while ((line = sr_Flights.ReadLine()) != null)
+    {
+        string[] lineC = line.Split(",");
+        if (lineC.Length >= 5)
+        {
+            string flightNumber = lineC[0];
+            string origin = lineC[1];
+            string destination = lineC[2];
+            DateTime expectedTime = DateTime.Parse(lineC[3]);
+            string requestFee = lineC[4];
+
+            Flight flight;
+            if (!string.IsNullOrEmpty(requestFee))
+            {
+                flight = new CFFTFlight(flightNumber, origin, destination, expectedTime, requestFee);
+            }
+            else
+            {
+                flight = new NORMFlight(flightNumber, origin, destination, expectedTime);
+            }
+            dictFlights.Add(flightNumber, flight);
+        }
+    }
+    Console.WriteLine("Loading Flights...");
+    Console.WriteLine($"{dictAirline.Count} Flights Loaded!");
+}
 
 
 
@@ -62,13 +94,87 @@ void ListAllFlights(Dictionary<string, Flight> dictFlights)
     }
     Console.WriteLine("=============================================");
 
+}
+ListAllFlights(dictFlights);
 
 // 4) List all boarding gates
 
 
 
 // 5) Assign a boarding gate to a flight
+AssignBoardingGateToFlight();
+void AssignBoardingGateToFlight()
+{
+    Console.Write("Enter Flight Number:\n");
+    string flightNumber = Console.ReadLine();
+    
+    if (!dictFlights.ContainsKey(flightNumber))
+    {
+        Console.WriteLine("Flight not found.");
+        return;
+    }
+    Console.Write("Enter Boarding Gate Name:\n");
+    string gateNumber = Console.ReadLine();
 
+    if (!dictBoardingGate.ContainsKey(gateNumber))
+    {
+        Console.WriteLine("Boarding Gate not found.");
+        return;
+    }
+
+    Flight flight = dictFlights[flightNumber]; // retrieve flight
+    BoardingGate gate = dictBoardingGate[gateNumber]; // retrieve boarding gate  
+
+    // display flight info
+    Console.WriteLine($"Flight Number: {flight.FlightNumber}");
+    Console.WriteLine($"Origin: {flight.Origin}");
+    Console.WriteLine($"Destination: {flight.Destination}");
+    Console.WriteLine($"Expected Time: {flight.ExpectedTime:dd/MM/yyyy hh:mm:ss tt}");
+    Console.WriteLine($"Special Request Code: None");
+
+    Console.WriteLine($"Boarding Gate Name: {gateNumber}");
+    Console.WriteLine($"Supports DDJB: {gate.SupportsDDJB}"); 
+    Console.WriteLine($"Supports CFFT: {gate.SupportsCFFT}");  
+    Console.WriteLine($"Supports LWTT: {gate.SupportsLWTT}");   
+
+    if (gate.Flight != null)
+    {
+        Console.WriteLine($"Boarding Gate {gateNumber} is already assigned to flight {gate.Flight.FlightNumber}. Please choose another gate.");
+        return;
+    }
+    // assign the boarding gate to the flight  
+    gate.Flight = flight; // assign the flight to the gate  
+    Console.Write("Would you like to update the status of the flight? (Y/N): ");
+    string updateStatus = Console.ReadLine().Trim().ToUpper();
+
+    if (updateStatus == "Y")
+    {
+        Console.WriteLine("1. Delayed");
+        Console.WriteLine("2. Boarding");
+        Console.WriteLine("3. On Time");
+        Console.Write("Please select the new status of the flight: ");
+        string statusChoice = Console.ReadLine().Trim();
+  
+        if (statusChoice == "1")
+        {
+            flight.Status = "Delayed";
+        }
+        else if (statusChoice == "2")
+        {
+            flight.Status = "Boarding";
+        }
+        else
+        {
+            flight.Status = "On Time";
+        }
+    }
+    else
+    {
+        flight.Status = "On Time"; // default status  
+    }
+
+    Console.WriteLine($"Flight {flight.FlightNumber} has been assigned to Boarding Gate {gateNumber}!");
+}
 
 
 // 6) Create a new flight
