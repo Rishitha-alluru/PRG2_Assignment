@@ -43,7 +43,24 @@ using (sr_BoardingGate)
 
 
 // 3) List all flights with their basic information
-
+void ListAllFlights(Dictionary<string, Flight> dictFlights)
+{
+    Console.WriteLine("==============================================");
+    Console.WriteLine("List of Flights for Changi Airport Terminal 5");
+    Console.WriteLine("==============================================");
+    Console.WriteLine($"{"Flight Number",-15}{"Airline Name",-21}{"Origin",-20}{"Destination",-19}{"Expected Departure/Arrival Time"}");
+    foreach (Flight flight in dictFlights.Values)
+    {
+        string airlineCode = flight.FlightNumber.Substring(0,2);
+        Airline airline;
+        if (dictAirline.TryGetValue(airlineCode, out airline))
+        {
+            string airlineName = airline.Name;
+            string expectedTime = flight.ExpectedTime.ToString("hh:mm:ss tt");
+            Console.WriteLine($"{flight.FlightNumber,-15}{airlineName,-21}{flight.Origin,-20}{flight.Destination,-19}{expectedTime}");
+        }
+    }
+    Console.WriteLine("=============================================");
 
 
 // 4) List all boarding gates
