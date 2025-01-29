@@ -58,31 +58,53 @@ using (sr_Flights)
             string origin = lineC[1];
             string destination = lineC[2];
             DateTime expectedTime = DateTime.Parse(lineC[3]);
-            string status = lineC[4];
+            string specialReqCode = lineC[4];
+            string status = "";
+            string airlineCode = flightNumber.Substring(0, 2);
 
             Flight flight;
-            if (!string.IsNullOrEmpty(status))
+            if (!string.IsNullOrEmpty(specialReqCode))
             {
-                if (status == "CFFT")
+                if (specialReqCode == "CFFT")
                 { 
-                    flight = new CFFTFlight(flightNumber, origin, destination, expectedTime);
+                    flight = new CFFTFlight(flightNumber, origin, destination, expectedTime, status);
                     dictFlights.Add(flightNumber, flight);
+                    foreach (string code in dictAirline.Keys)
+                    {
+                        if (code == airlineCode)
+                        { dictAirline[code].AddFlight(flight); }
+                    }
                 }
-                else if (status == "DDJB")
+                else if (specialReqCode == "DDJB")
                 { 
-                    flight = new DDJBFlight(flightNumber, origin, destination, expectedTime);
+                    flight = new DDJBFlight(flightNumber, origin, destination, expectedTime, status);
                     dictFlights.Add(flightNumber, flight);
+                    foreach (string code in dictAirline.Keys)
+                    {
+                        if (specialReqCode == airlineCode)
+                        { dictAirline[code].AddFlight(flight); }
+                    }
                 }
-                else if (status == "LWTT")
+                else if (specialReqCode == "LWTT")
                 { 
-                    flight = new LWTTFlight(flightNumber, origin, destination, expectedTime);
+                    flight = new LWTTFlight(flightNumber, origin, destination, expectedTime, status);
                     dictFlights.Add(flightNumber, flight);
+                    foreach (string code in dictAirline.Keys)
+                    {
+                        if (code == airlineCode)
+                        { dictAirline[code].AddFlight(flight); }
+                    }
                 }
             }
             else
             {
-                flight = new NORMFlight(flightNumber, origin, destination, expectedTime);
+                flight = new NORMFlight(flightNumber, origin, destination, expectedTime, status);
                 dictFlights.Add(flightNumber, flight);
+                foreach (string code in dictAirline.Keys)
+                {
+                    if (code == airlineCode)
+                    { dictAirline[code].AddFlight(flight); }
+                }
             }
         }
     }
@@ -186,7 +208,7 @@ void AssignBoardingGateToFlight()
     Console.WriteLine($"Origin: {flight.Origin}");
     Console.WriteLine($"Destination: {flight.Destination}");
     Console.WriteLine($"Expected Time: {flight.ExpectedTime:dd/MM/yyyy hh:mm:ss tt}");
-    Console.WriteLine($"Special Request Code: {flight.Status}");
+    Console.WriteLine($"Special Request Code: {flight.SpecialRequestCode}");
 
     Console.WriteLine($"Boarding Gate Name: {gateNumber}");
     Console.WriteLine($"Supports DDJB: {gate.SupportsDDJB}"); 
@@ -239,7 +261,86 @@ void AssignBoardingGateToFlight()
 
 // 7) Display full flight details from an airline
 
+void DisplayFlightDetails(Dictionary<string, Airline> dictAirline)
+{
+    Console.WriteLine("==============================================");
+    Console.WriteLine("List of Airlines for Changi Airport Terminal 5");
+    Console.WriteLine("==============================================");
+    Console.WriteLine($"{"Code",-6}{"Name"}");
+    foreach (Airline airline in dictAirline.Values)
+    {
+        Console.WriteLine($"{airline.Code,-6}{airline.Name}");
+    }
+    Console.WriteLine("==============================================");
+    Console.WriteLine();
+    Console.Write("Enter Airline Code: ");
+    string code = Console.ReadLine();
+    try
+    {
+        foreach (string aCode in dictAirline.Keys)
+        {
+            if (aCode == code)
+            {
+                Console.WriteLine($"Flights under {dictAirline[code].Name}:");
+                Console.WriteLine($"{"Flight Number",-15}{"Origin",-20}{"Destination",-19}");
+                foreach (Flight flight in dictAirline[aCode].Flights.Values)
+                {
+                    string expectedTime = flight.ExpectedTime.ToString("hh:mm:ss tt");
+                    Console.WriteLine($"{flight.FlightNumber,-15}{flight.Origin,-20}{flight.Destination,-19}");
+                }
+                Console.WriteLine();
+                Console.Write("Enter Flight Number: ");
+                string flightNumber = Console.ReadLine();
+                try
+                {
+                    foreach (Flight flight in dictAirline[aCode].Flights.Values)
+                    {
+                        if (flight.FlightNumber == flightNumber)
+                        {
+                            string airlineCode = flight.FlightNumber.Substring(0, 2);
+                            Airline airline;
+                            if (dictAirline.TryGetValue(airlineCode, out airline))
+                            {
+                                string airlineName = airline.Name;
+                                string expectedTime = flight.ExpectedTime.ToString("hh:mm:ss tt");
+                                Console.WriteLine($"Flight Number: {flightNumber}");
+                                Console.WriteLine($"Airline Name: {airlineName}");
+                                Console.WriteLine($"Origin: {flight.Origin}");
+                                Console.WriteLine($"Destination: {flight.Destination}");
+                                Console.WriteLine($"Expected Departure/Arrival Time: {expectedTime}");
+                                if (flight.SpecialRequestCode != null)
+                                { Console.WriteLine($"Special Request Code: {flight.SpecialRequestCode}"); }
+                                else
+                                { Console.WriteLine($"Special Request Code: None"); }
+                                int i = 0;
+                                foreach(BoardingGate bGate in dictBoardingGate.Values)
+                                {
+                                    i++;
+                                    if (bGate.Flight.FlightNumber == flightNumber)
+                                    {  Console.WriteLine($"Boarding Gate: {bGate.GateNumber}"); }
+                                    else if (i == dictBoardingGate.Values.Count() && bGate.Flight.FlightNumber!=flightNumber)
+                                    { throw new Exception("Boarding Gate unassigned"); }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
 
+                }
+            }
+            else if (!dictAirline.Keys.Contains(code))
+            {
+                throw new Exception("Code not found, try again.");
+            }
+        }
+    }
+    catch (Exception e) 
+    {
+        Console.WriteLine("Error: "+e.Message);
+    }
+}
 
 // 8) Modify flight details
 
