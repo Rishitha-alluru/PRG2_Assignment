@@ -256,8 +256,74 @@ void AssignBoardingGateToFlight()
 
 
 // 6) Create a new flight
+void CreateFlight()
+{
+    while (true)
+    {
+        Console.Write("Enter Flight Number: ");
+        string flightNumber = Console.ReadLine();
+        Console.Write("Enter Origin: ");
+        string origin = Console.ReadLine();
+        Console.Write("Enter Destination: ");
+        string destination = Console.ReadLine();
+        Console.Write("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm): ");
+        DateTime expectedTime;
+        while (!DateTime.TryParseExact(Console.ReadLine().Trim(), "dd/MM/yyyy HH:mm",
+            System.Globalization.CultureInfo.InvariantCulture,
+            System.Globalization.DateTimeStyles.None, out expectedTime))
+        {
+            Console.Write("Invalid date format. Please enter the expected time again (dd/MM/yyyy hh:mm): ");
+        }
 
+        Console.Write("Enter Special Request Code (CFFT/DDJB/LWTT/None): ");
+        string requestCode = Console.ReadLine().ToUpper();
 
+        Flight newFlight = null;
+
+        if (requestCode == "CFFT")
+        {
+            newFlight = new CFFTFlight(flightNumber, origin, destination, expectedTime, "Scheduled");
+        }
+        else if (requestCode == "LWTT")
+        {
+            newFlight = new LWTTFlight(flightNumber, origin, destination, expectedTime, "Scheduled");
+        }
+        else if (requestCode == "DDJB")
+        {
+            newFlight = new DDJBFlight(flightNumber, origin, destination, expectedTime, "Scheduled");
+        }
+        else if (requestCode == "NONE")
+        {
+            newFlight = new NORMFlight(flightNumber, origin, destination, expectedTime, "Scheduled");
+        }
+        else
+        {
+            Console.WriteLine("Invalid request code. Flight not created.");
+            return;
+        }
+
+        // store new flight in dictionary
+        if (!dictFlights.ContainsKey(flightNumber))
+        {
+            dictFlights.Add(flightNumber, newFlight);
+            Console.WriteLine($"Flight {flightNumber} has been added!");
+        }
+        else
+        {
+            Console.WriteLine("A flight with this number already exists.");
+        }
+
+        Console.Write("Would you like to add another flight? (Y/N): ");
+        string addAnother = Console.ReadLine().ToUpper();
+
+        if (addAnother != "Y")
+        {
+            break;
+        }
+    }
+    Console.WriteLine("Flight creation process completed.");
+}
+CreateFlight();
 
 // 7) Display full flight details from an airline
 
