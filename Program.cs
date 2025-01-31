@@ -81,7 +81,7 @@ using (sr_Flights)
                     dictFlights.Add(flightNumber, flight);
                     foreach (string code in dictAirline.Keys)
                     {
-                        if (specialReqCode == airlineCode)
+                        if (code == airlineCode)
                         { dictAirline[code].AddFlight(flight); }
                     }
                 }
@@ -265,11 +265,9 @@ void CreateFlight()
         string destination = Console.ReadLine();
         Console.Write("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm): ");
         DateTime expectedTime;
-        while (!DateTime.TryParseExact(Console.ReadLine().Trim(), "dd/MM/yyyy HH:mm",
-            System.Globalization.CultureInfo.InvariantCulture,
-            System.Globalization.DateTimeStyles.None, out expectedTime))
+        while (!DateTime.TryParseExact(Console.ReadLine().Trim(), "dd/MM/yyyy HH:mm",System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None, out expectedTime))
         {
-            Console.Write("Invalid date format. Please enter the expected time again (dd/MM/yyyy hh:mm): ");
+            Console.Write("Invalid date format. Please enter the expected time again (dd/MM/yyyy HH:mm): "); // Fix: Changed format to match input
         }
 
         Console.Write("Enter Special Request Code (CFFT/DDJB/LWTT/None): ");
@@ -378,10 +376,14 @@ void DisplayFlightDetails(Dictionary<string, Airline> dictAirline, Dictionary<st
                                 foreach(BoardingGate bGate in dictBoardingGate.Values)
                                 {
                                     i++;
-                                    if (bGate.Flight.FlightNumber == flightNumber)
-                                    {  Console.WriteLine($"Boarding Gate: {bGate.GateNumber}"); }
-                                    else if (i == dictBoardingGate.Values.Count() && bGate.Flight.FlightNumber!=flightNumber)
-                                    { throw new Exception("Boarding Gate unassigned"); }
+                                    if (bGate.Flight != null && bGate.Flight.FlightNumber == flightNumber)
+                                    {
+                                        Console.WriteLine($"Boarding Gate: {bGate.GateNumber}");
+                                    }
+                                    else if (i == dictBoardingGate.Values.Count() && (bGate.Flight == null || bGate.Flight.FlightNumber != flightNumber))
+                                    {
+                                        throw new Exception("Boarding Gate unassigned");
+                                    }
                                 }
                             }
                         }
@@ -405,7 +407,6 @@ void DisplayFlightDetails(Dictionary<string, Airline> dictAirline, Dictionary<st
 }
 
 // 8) Modify flight details
-// Do not use this feature unless you have used feature 4
 
 void ModifyFlightDetails(Dictionary<string, Airline> dictAirline, Dictionary<string, BoardingGate> dictBoardingGate)
 {
@@ -441,7 +442,7 @@ void ModifyFlightDetails(Dictionary<string, Airline> dictAirline, Dictionary<str
                 try
                 {
                     int option = Convert.ToInt32(Console.ReadLine());
-                    if (option = 1)
+                    if (option == 1)
                     {
                         Console.Write("Enter Flight Number: ");
                         string flightNumber = Console.ReadLine();
@@ -470,49 +471,58 @@ void ModifyFlightDetails(Dictionary<string, Airline> dictAirline, Dictionary<str
                                         foreach (BoardingGate bGate in dictBoardingGate.Values)
                                         {
                                             i++;
-                                            if (bGate.Flight.FlightNumber == flightNumber)
-                                            { Console.WriteLine($"Boarding Gate: {bGate.GateNumber}"); }
-                                            else if (i == dictBoardingGate.Values.Count() && bGate.Flight.FlightNumber != flightNumber)
-                                            { throw new Exception("Boarding Gate unassigned"); }
+                                            if (bGate.Flight != null && bGate.Flight.FlightNumber == flightNumber)
+                                            {
+                                                Console.WriteLine($"Boarding Gate: {bGate.GateNumber}");
+                                            }
+                                            else if (i == dictBoardingGate.Values.Count() && (bGate.Flight == null || bGate.Flight.FlightNumber != flightNumber))
+                                            {
+                                                throw new Exception("Boarding Gate unassigned");
+                                            }
                                         }
                                     }
                                     Console.WriteLine("Aspects to modify:");
                                     Console.WriteLine("[1] Origin");
                                     Console.WriteLine("[2] Destination");
-                                    Console.WriteLine("[3] Expected Departure Time");
-                                    Console.WriteLine("[4] Expected Arrival Time");
-                                    Console.WriteLine("[5] Status");
-                                    Console.WriteLine("[6] Special Request Code");
-                                    Console.WriteLine("[7] Boarding Gate");
-                                    Console.Write("Enter option: ")
+                                    Console.WriteLine("[3] Expected Departure/Arrival Time");
+                                    Console.WriteLine("[4] Status");
+                                    Console.WriteLine("[5] Special Request Code");
+                                    Console.WriteLine("[6] Boarding Gate");
+                                    Console.Write("Enter option: ");
 
-                                    string modifyChoice = Convert.ToInt32(Console.ReadLine());
+                                    int modifyChoice = Convert.ToInt32(Console.ReadLine());
 
                                     switch (modifyChoice)
                                     {
                                         case 1:
                                             Console.Write("Enter new Origin: ");
                                             flight.Origin = Console.ReadLine();
+                                            break;
                                         case 2:
                                             Console.Write("Enter new Destination: ");
                                             flight.Destination = Console.ReadLine();
+                                            break;
                                         case 3:
                                             Console.Write("Enter new Expected Departure Time (yyyy-MM-dd): ");
-                                            flight.ExpectedDeparture = DateTime.Parse(Console.ReadLine());
+                                            flight.ExpectedTime = DateTime.Parse(Console.ReadLine());
+                                            break;
                                         case 4:
-                                            Console.Write("Enter new Expected Arrival Time (yyyy-MM-dd): ");
-                                            flight.ExpectedArrival = DateTime.Parse(Console.ReadLine());
-                                        case 5:
                                             Console.Write("Enter new Status: ");
                                             flight.Status = Console.ReadLine();
-                                        case 6:
+                                            break;
+                                        case 5:
                                             Console.Write("Enter new Special Request Code: ");
                                             flight.SpecialRequestCode = Console.ReadLine();
-                                        case 7:
+                                            break;
+                                        case 6:
                                             Console.Write("Enter new Boarding Gate: ");
-                                            flight.BoardingGate = Console.ReadLine();
+                                            string gateNumber = Console.ReadLine();
+                                            BoardingGate gate = dictBoardingGate[gateNumber];
+                                            gate.Flight = flight;
+                                            break;
                                         default:
                                             Console.WriteLine("Invalid choice.");
+                                            break;
                                     }
 
                                 }
@@ -581,16 +591,16 @@ void DisplayScheduledFlights(Dictionary<string, Flight> dictFlights, Dictionary<
     {
         string airlineCode = flight.FlightNumber.Length >= 2 ? flight.FlightNumber.Substring(0, 2) : "Unknown";
         Airline airline = null;
-        if (dictAirline.ContainsKey(airlineCode)) // checks if airline code exists
+        if (dictAirline.ContainsKey(airlineCode)) 
         {
-            airline = dictAirline[airlineCode]; // get airline with airline code
+            airline = dictAirline[airlineCode];
         }
 
         if (airline != null)
         {
             string airlineName = airline.Name;
             string expectedTime = flight.ExpectedTime.ToString("dd/M/yyyy h:mm:ss tt");
-            string status = flight.Status ?? "Scheduled"; // sets default to Scheduled if status is null
+            string status = flight.Status ?? "Scheduled";
 
             string boardingGate = "Unassigned";
             foreach (BoardingGate gate in dictBoardingGate.Values)
@@ -606,6 +616,59 @@ void DisplayScheduledFlights(Dictionary<string, Flight> dictFlights, Dictionary<
     Console.WriteLine("=============================================");
 }
 
+// Advanced : 1 Process all unassigned flights to boarding gates in bulk
+
+void AssignGatesToUnassignedFlights(Dictionary<string, Flight> dictFlights, Dictionary<string, BoardingGate> dictBoardingGate)
+{
+    int unassignedFlightCount = 0;
+    int unassignedGateCount = 0;
+
+    foreach (var flight in dictFlights.Values)
+    {
+        if (!dictBoardingGate.Values.Any(g => g.Flight == flight))
+        {
+            unassignedFlightCount++;
+        }
+    }
+
+    foreach (var gate in dictBoardingGate.Values)
+    {
+        if (gate.Flight == null)
+        {
+            unassignedGateCount++;
+        }
+    }
+    Console.WriteLine($"Total number of unassigned flights: {unassignedFlightCount}");
+    Console.WriteLine($"Total number of unassigned boarding gates: {unassignedGateCount}");
+
+    int processedFlights = 0;
+    int processedGates = 0;
+
+    foreach (var flight in dictFlights.Values)
+    {
+        if (!dictBoardingGate.Values.Any(g => g.Flight == flight))
+        {
+            BoardingGate assignedGate = null;
+
+            if (!string.IsNullOrEmpty(flight.SpecialRequestCode))
+            {
+                assignedGate = dictBoardingGate.Values.FirstOrDefault(g => g.Flight == null && ((flight.SpecialRequestCode == "CFFT" && g.SupportsCFFT) || (flight.SpecialRequestCode == "DDJB" && g.SupportsDDJB) || (flight.SpecialRequestCode == "LWTT" && g.SupportsLWTT)));
+            }
+            else
+            {
+                assignedGate = dictBoardingGate.Values.FirstOrDefault(g => g.Flight == null &&!g.SupportsCFFT && !g.SupportsDDJB && !g.SupportsLWTT);
+            }
+
+            if (assignedGate != null)
+            {
+                assignedGate.Flight = flight;
+                processedFlights++;
+                processedGates++;
+            }
+        }
+    }
+}
+
 int DisplayMenu()
 {
     Console.WriteLine("==============================================");
@@ -618,6 +681,7 @@ int DisplayMenu()
     Console.WriteLine("[5] Display Airline Flights");
     Console.WriteLine("[6] Modify Flight Details");
     Console.WriteLine("[7] Display Flight Schedule");
+    Console.WriteLine("[8] Assign Boarding Gates to all Flights unassaigned");
     Console.WriteLine("[0] Exit");
     Console.Write("Enter option: ");
     int opt = Convert.ToInt32(Console.ReadLine());
@@ -641,12 +705,12 @@ while (opt != 0)
     }
     else if (opt == 3)
     {
-        AssignBoardingGateToFlight()
+        AssignBoardingGateToFlight();
         opt = DisplayMenu();
     }
     else if (opt == 4)
     {
-        CreateFlight()
+        CreateFlight();
         opt = DisplayMenu();
     }
     else if (opt == 5)
@@ -662,6 +726,11 @@ while (opt != 0)
     else if (opt == 7)
     {
         DisplayScheduledFlights(dictFlights, dictBoardingGate);
+        opt = DisplayMenu();
+    }
+    else if (opt == 8)
+    {
+        AssignGatesToUnassignedFlights(dictFlights, dictBoardingGate);
         opt = DisplayMenu();
     }
     else
