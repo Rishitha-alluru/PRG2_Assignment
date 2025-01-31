@@ -413,3 +413,41 @@ void DisplayFlightDetails(Dictionary<string, Airline> dictAirline)
 
 
 // 9) Display scheduled flights in chronological order, with boarding gates assignments where applicable
+void DisplayScheduledFlights(Dictionary<string, Flight> dictFlights, Dictionary<string, BoardingGate> dictBoardingGate)
+{
+    List<Flight> sortedFlights = dictFlights.Values.OrderBy(flight => flight.ExpectedTime).ToList();
+    Console.WriteLine("=============================================");
+    Console.WriteLine("Flight Schedule for Changi Airport Terminal 5");
+    Console.WriteLine("=============================================");
+    Console.WriteLine($"{"Flight Number",-15}{"Airline Name",-21}{"Origin",-20}{"Destination",-19}{"Expected Departure/Arrival Time",-32}{"Status",-13}{"Boarding Gate",-8}");
+
+    foreach (Flight flight in sortedFlights)
+    {
+        string airlineCode = flight.FlightNumber.Length >= 2 ? flight.FlightNumber.Substring(0, 2) : "Unknown";
+        Airline airline = null;
+        if (dictAirline.ContainsKey(airlineCode)) // checks if airline code exists
+        {
+            airline = dictAirline[airlineCode]; // get airline with airline code
+        }
+
+        if (airline != null)
+        {
+            string airlineName = airline.Name;
+            string expectedTime = flight.ExpectedTime.ToString("dd/M/yyyy h:mm:ss tt");
+            string status = flight.Status ?? "Scheduled"; // sets default to Scheduled if status is null
+
+            string boardingGate = "Unassigned";
+            foreach (BoardingGate gate in dictBoardingGate.Values)
+            {
+                if (gate.Flight != null && gate.Flight.FlightNumber == flight.FlightNumber)
+                {
+                    boardingGate = gate.GateNumber;
+                    break;
+                }
+            }
+            Console.WriteLine($"{flight.FlightNumber,-15}{airlineName,-21}{flight.Origin,-20}{flight.Destination,-19}{expectedTime,-32}{status,-13}{boardingGate,-8}");  
+        }
+    }
+    Console.WriteLine("=============================================");
+}
+DisplayScheduledFlights(dictFlights, dictBoardingGate);
