@@ -320,7 +320,6 @@ void CreateFlight()
     }
     Console.WriteLine("Flight creation process completed.");
 }
-CreateFlight();
 
 // 7) Display full flight details from an airline
 
@@ -404,7 +403,6 @@ void DisplayFlightDetails(Dictionary<string, Airline> dictAirline, Dictionary<st
         Console.WriteLine("Error: "+e.Message);
     }
 }
-DisplayFlightDetails(dictAirline, dictBoardingGate);
 
 // 8) Modify flight details
 // Do not use this feature unless you have used feature 4
@@ -569,7 +567,6 @@ void ModifyFlightDetails(Dictionary<string, Airline> dictAirline, Dictionary<str
         Console.WriteLine("Error: " + e.Message);
     }
 }
-ModifyFlightDetails(dictAirline, dictBoardingGate);
 
 // 9) Display scheduled flights in chronological order, with boarding gates assignments where applicable
 void DisplayScheduledFlights(Dictionary<string, Flight> dictFlights, Dictionary<string, BoardingGate> dictBoardingGate)
@@ -608,7 +605,6 @@ void DisplayScheduledFlights(Dictionary<string, Flight> dictFlights, Dictionary<
     }
     Console.WriteLine("=============================================");
 }
-DisplayScheduledFlights(dictFlights, dictBoardingGate);
 
 int DisplayMenu()
 {
