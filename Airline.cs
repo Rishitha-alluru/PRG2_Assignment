@@ -65,6 +65,9 @@ namespace S10268022_PRG2Assignment
             if (totalFlights > 5)
                 discount += totalFees * 0.03;
 
+            Console.WriteLine($"Subtotal:      ${totalFees.ToString("0.00")}");
+            Console.WriteLine($"Discount:      $-{discount.ToString("0.00")}");
+
             return Math.Max(0, totalFees - discount);
         }
 
