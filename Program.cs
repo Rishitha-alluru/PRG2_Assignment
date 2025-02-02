@@ -707,7 +707,7 @@ int DisplayMenu()
     Console.WriteLine("[8] Assign Boarding Gates to all Flights unassaigned");
     Console.WriteLine("[9] Display Total Fee");
     Console.WriteLine("[0] Exit");
-    Console.Write("\nPlease select your option:\n");
+    Console.Write("Enter option: ");
     int opt = Convert.ToInt32(Console.ReadLine());
     return opt;
 }
