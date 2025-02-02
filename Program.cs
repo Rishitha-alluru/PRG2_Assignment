@@ -70,6 +70,7 @@ using (sr_Flights)
                 if (specialReqCode == "CFFT")
                 { 
                     flight = new CFFTFlight(flightNumber, origin, destination, expectedTime, status);
+                    flight.SpecialRequestCode = specialReqCode;
                     dictFlights.Add(flightNumber, flight);
                     foreach (string code in dictAirline.Keys)
                     {
@@ -80,6 +81,7 @@ using (sr_Flights)
                 else if (specialReqCode == "DDJB")
                 { 
                     flight = new DDJBFlight(flightNumber, origin, destination, expectedTime, status);
+                    flight.SpecialRequestCode = specialReqCode;
                     dictFlights.Add(flightNumber, flight);
                     foreach (string code in dictAirline.Keys)
                     {
@@ -90,6 +92,7 @@ using (sr_Flights)
                 else if (specialReqCode == "LWTT")
                 { 
                     flight = new LWTTFlight(flightNumber, origin, destination, expectedTime, status);
+                    flight.SpecialRequestCode = specialReqCode;
                     dictFlights.Add(flightNumber, flight);
                     foreach (string code in dictAirline.Keys)
                     {
@@ -100,7 +103,9 @@ using (sr_Flights)
             }
             else
             {
+                specialReqCode = "NONE";
                 flight = new NORMFlight(flightNumber, origin, destination, expectedTime, status);
+                flight.SpecialRequestCode = specialReqCode;
                 dictFlights.Add(flightNumber, flight);
                 foreach (string code in dictAirline.Keys)
                 {
@@ -179,7 +184,7 @@ void ListAllBoardingGates(Dictionary<string, BoardingGate> dictBoardingGates)
         }
         else
         {
-            sRequest = "None";
+            sRequest = "NONE";
         }
 
         if (boardingGate.Flight == null)
@@ -709,67 +714,72 @@ int DisplayMenu()
 Console.WriteLine();
 Console.WriteLine();
 Console.WriteLine();
-int opt = DisplayMenu();
-while (opt != 0)
+try
 {
-    if (opt == 1)
+    int opt = DisplayMenu();
+    while (opt != 0)
     {
-        ListAllFlights(dictFlights);
-        Console.WriteLine();
-        opt = DisplayMenu();
-    }
-    else if (opt == 2)
-    {
-        ListAllBoardingGates(dictBoardingGate);
-        Console.WriteLine();
-        opt = DisplayMenu();
-    }
-    else if (opt == 3)
-    {
-        AssignBoardingGateToFlight();
-        Console.WriteLine();
-        opt = DisplayMenu();
-    }
-    else if (opt == 4)
-    {
-        CreateFlight();
-        Console.WriteLine();
-        opt = DisplayMenu();
-    }
-    else if (opt == 5)
-    {
-        DisplayFlightDetails(dictAirline, dictBoardingGate);
-        Console.WriteLine();
-        opt = DisplayMenu();
-    }
-    else if (opt == 6)
-    {
-        ModifyFlightDetails(dictAirline, dictBoardingGate);
-        Console.WriteLine();
-        opt = DisplayMenu();
-    }
-    else if (opt == 7)
-    {
-        DisplayScheduledFlights(dictFlights, dictBoardingGate);
-        Console.WriteLine();
-        opt = DisplayMenu();
-    }
-    else if (opt == 8)
-    {
-        AssignGatesToUnassignedFlights(dictFlights, dictBoardingGate);
-        Console.WriteLine();
-        opt = DisplayMenu();
-    }
-    else if (opt ==9)
-    {
-        DisplayTotalFee(terminal);
-        Console.WriteLine();
-        opt = DisplayMenu();
-    }
-    else
-    {
-        Console.WriteLine("Invalid Option. Try Again.");
-        Console.WriteLine();
-        opt = DisplayMenu();
+        if (opt == 1)
+        {
+            ListAllFlights(dictFlights);
+            Console.WriteLine();
+            opt = DisplayMenu();
+        }
+        else if (opt == 2)
+        {
+            ListAllBoardingGates(dictBoardingGate);
+            Console.WriteLine();
+            opt = DisplayMenu();
+        }
+        else if (opt == 3)
+        {
+            AssignBoardingGateToFlight();
+            Console.WriteLine();
+            opt = DisplayMenu();
+        }
+        else if (opt == 4)
+        {
+            CreateFlight();
+            Console.WriteLine();
+            opt = DisplayMenu();
+        }
+        else if (opt == 5)
+        {
+            DisplayFlightDetails(dictAirline, dictBoardingGate);
+            Console.WriteLine();
+            opt = DisplayMenu();
+        }
+        else if (opt == 6)
+        {
+            ModifyFlightDetails(dictAirline, dictBoardingGate);
+            Console.WriteLine();
+            opt = DisplayMenu();
+        }
+        else if (opt == 7)
+        {
+            DisplayScheduledFlights(dictFlights, dictBoardingGate);
+            Console.WriteLine();
+            opt = DisplayMenu();
+        }
+        else if (opt == 8)
+        {
+            AssignGatesToUnassignedFlights(dictFlights, dictBoardingGate);
+            Console.WriteLine();
+            opt = DisplayMenu();
+        }
+        else if (opt == 9)
+        {
+            DisplayTotalFee(terminal);
+            Console.WriteLine();
+            opt = DisplayMenu();
+        }
+        else
+        {
+            Console.WriteLine("Invalid Option. Try Again.");
+            Console.WriteLine();
+            opt = DisplayMenu();
+        }
     }
 }
+catch(Exception e)
+{ Console.WriteLine("Error! Try again"); }
